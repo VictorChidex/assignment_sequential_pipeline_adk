@@ -6,6 +6,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from utils.file_loader import load_instructions_file
 # TODO: import the tool(s) this agent needs from tools.file_writer_tool
 # Suggested: write_text_file (+ optional check_html)
+from tools.file_writer_tool import write_text_file
+from tools.file_writer_tool import check_html
 from utils.bedrock_llm import BedrockLlm  # noqa: F401 — registers bedrock/... model
 
 # ✏️  AGENT 6 – TODO
@@ -15,6 +17,7 @@ qa_reviewer_agent = LlmAgent(
     model="bedrock/amazon.nova-lite-v1:0",
     instruction=load_instructions_file("agents/qa_reviewer/instructions.txt"),
     description=load_instructions_file("agents/qa_reviewer/description.txt"),
-    tools=[],                                  # TODO: add tool(s), e.g. [write_text_file]
+    tools=[write_text_file, check_html],                # TODO: add tool(s), e.g. [write_text_file]
     # TODO: add output_key="qa_review_output"
+    output_key="qa_review_output"
 )
