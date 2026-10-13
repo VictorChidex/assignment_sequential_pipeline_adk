@@ -58,7 +58,7 @@ def write_text_file(content: str, file_label: str) -> dict:
 # -----------------------------------------------------------------------------
 # TOOL FUNCTION: write_html_file  (TODO)
 # -----------------------------------------------------------------------------
-def write_html_file(content: str) -> dict:
+def write_html_file(content: str, file_label: str) -> dict:
     """
     Writes a complete HTML page to a timestamped .html file in the output folder.
 
@@ -68,6 +68,35 @@ def write_html_file(content: str) -> dict:
     Returns:
         dict: A dictionary containing the status and generated filename.
     """
+
+    # Get the current date and time, format it as YYMMDD_HHMMSS.
+    # Example: "250611_142317"
+    timestamp = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+
+    # Keep the label safe for file names (letters, numbers, underscores only).
+    safe_label = "".join(c if c.isalnum() or c == "_" else "_" for c in file_label.lower())
+
+    # Example: "output/250611_142317_market_research.md"
+    filename = f"output/{timestamp}_{safe_label}.md"
+
+    # Ensure the "output" directory exists.
+    Path("output").mkdir(exist_ok=True)
+
+    try:
+        Path(filename).write_text(content, encoding="utf-8")
+        return {
+            "status": "success",
+            "file": filename,
+            "message": f"{safe_label} saved successfully."
+        }
+
+    except Exception as e:
+        return {
+            "status": "error",
+            "file": filename,
+            "message": f"Error: {str(e)}"
+        }
+
 
     # TODO: Follow the same pattern as write_text_file:
     #   1. build a timestamp
@@ -93,3 +122,189 @@ def write_html_file(content: str) -> dict:
 #   - Return a dict.
 #   - Attach it to an agent with tools=[...] and tell the agent in
 #     instructions.txt WHEN to call it.
+
+
+import math
+
+def calculate_pricing(cost: float, margin_percent: float) -> dict:
+    """
+    Calculates selling price based on cost and desired profit margin.
+
+    Args:
+        cost (float): Product cost; must be non-negative.
+        margin_percent (float): Profit margin as a percentage of selling price,
+            from 0 to below 100.
+
+    Returns:
+        dict: A dictionary containing the status, pricing details, and message.
+    """
+
+    try:
+        # Ensure the cost is finite and non-negative.
+        if not math.isfinite(cost) or cost < 0:
+            raise ValueError("Cost must be finite and non-negative.")
+
+        # Ensure the profit margin is within the valid range.
+        if not math.isfinite(margin_percent) or not 0 <= margin_percent < 100:
+            raise ValueError("Margin percentage must be between 0 and below 100.")
+
+        # Calculate the selling price and profit.
+        selling_price = cost / (1 - margin_percent / 100)
+        profit = selling_price - cost
+
+        return {
+            "status": "success",
+            "cost": round(cost, 2),
+            "margin_percent": margin_percent,
+            "selling_price": round(selling_price, 2),
+            "profit": round(profit, 2),
+            "message": "Pricing calculated successfully."
+        }
+
+    except (TypeError, ValueError, OverflowError) as e:
+        return {
+            "status": "error",
+            "message": f"Error: {str(e)}"
+        }
+
+
+
+import datetime
+import re
+from html.parser import HTMLParser
+
+
+def count_words(text: str) -> dict:
+    """
+    Counts the words in the provided text.
+
+    Args:
+        text (str): The text to count words in.
+
+    Returns:
+        dict: A dictionary containing the status, word count, and message.
+    """
+
+    try:
+        # Ensure the input is a string.
+        if not isinstance(text, str):
+            raise TypeError("Text must be a string.")
+
+        # Count whitespace-separated words.
+        word_count = len(text.split())
+
+        return {
+            "status": "success",
+            "word_count": word_count,
+            "message": "Words counted successfully."
+        }
+
+    except (TypeError, ValueError) as e:
+        return {
+            "status": "error",
+            "message": f"Error: {str(e)}"
+        }
+
+
+def check_html(html: str) -> dict:
+    """
+    Checks a complete HTML document for basic structural elements.
+    This is a basic check, not a full HTML standards validator.
+
+    Args:
+        html (str): Full HTML document (including <!DOCTYPE html>) as a string.
+
+    Returns:
+        dict: A dictionary containing the status, check result, and message.
+    """
+
+    class DocumentParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.opening_tags = set()
+            self.closing_tags = set()
+            self.has_doctype = False
+
+        def handle_decl(self, decl):
+            if decl.strip().lower() == "doctype html":
+                self.has_doctype = True
+
+        def handle_starttag(self, tag, attrs):
+            self.opening_tags.add(tag)
+
+        def handle_endtag(self, tag):
+            self.closing_tags.add(tag)
+
+    try:
+        # Ensure the input is a non-empty string.
+        if not isinstance(html, str):
+            raise TypeError("HTML must be a string.")
+
+        if not html.strip():
+            raise ValueError("HTML must not be empty.")
+
+        # Parse the document to identify structural elements.
+        parser = DocumentParser()
+        parser.feed(html)
+        parser.close()
+
+        # Check for the doctype and required opening and closing tags.
+        missing_elements = []
+
+        if not parser.has_doctype:
+            missing_elements.append("<!DOCTYPE html>")
+
+        for tag in ("html", "head", "body"):
+            if tag not in parser.opening_tags:
+                missing_elements.append(f"<{tag}>")
+            if tag not in parser.closing_tags:
+                missing_elements.append(f"</{tag}>")
+
+        passed = not missing_elements
+
+        return {
+            "status": "success",
+            "passes_basic_checks": passed,
+            "missing_elements": missing_elements,
+            "message": (
+                "HTML passed basic structural checks."
+                if passed
+                else "HTML is missing required structural elements."
+            )
+        }
+
+    except (TypeError, ValueError) as e:
+        return {
+            "status": "error",
+            "message": f"Error: {str(e)}"
+        }
+
+
+def get_today() -> dict:
+    """
+    Gets today's date using the system's local timezone.
+
+    Args:
+        None.
+
+    Returns:
+        dict: A dictionary containing the status, current date, and message.
+    """
+
+    try:
+        # Get today's date.
+        today = datetime.date.today()
+
+        return {
+            "status": "success",
+            "date": today.isoformat(),
+            "day": today.strftime("%A"),
+            "message": "Today's date retrieved successfully."
+        }
+
+    except (ValueError, OSError) as e:
+        return {
+            "status": "error",
+            "message": f"Error: {str(e)}"
+        }
+
