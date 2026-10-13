@@ -24,10 +24,10 @@ SESSION_ID = "session_launchpad_1"
 
 # TODO: change this to the name of the LAST agent in your pipeline
 # (start with "market_researcher_agent", end with "qa_reviewer_agent").
-FINAL_AGENT_NAME = "market_researcher_agent"
+FINAL_AGENT_NAME = "qa_reviewer_agent"
 
 # Set to False to hide the full JSON of every event and only see the summary.
-SHOW_EVENTS = True
+SHOW_EVENTS = False
 
 
 # --- 2. THE MAIN CHAT LOOP FUNCTION ---
