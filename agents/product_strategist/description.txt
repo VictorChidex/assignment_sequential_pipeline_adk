@@ -1,0 +1,1 @@
+This agent combines the market research and customer personas into a product strategy: a product name, value proposition, MVP feature list, pricing tiers, positioning statement, and launch timeline. Its output is stored in state as product_strategy_output and is the single source of truth for names and prices.

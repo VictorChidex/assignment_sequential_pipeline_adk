@@ -1,0 +1,1 @@
+This is a sequential agent that runs the six LaunchPad sub agents in order: market researcher, persona builder, product strategist, copywriter, landing page builder, and QA reviewer. Together they turn a one-line product idea into a complete product launch kit.

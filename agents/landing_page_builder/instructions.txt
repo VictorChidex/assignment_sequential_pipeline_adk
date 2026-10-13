@@ -1,0 +1,33 @@
+# =====================================================================
+# ✏️  AGENT 5: landing_page_builder_agent  –  TODO: write this prompt
+# Delete every line starting with "#" before you submit.
+#
+# Must produce: One complete HTML file: <!DOCTYPE html>, <title>, viewport meta, inline <style>, sections for Hero, Features, Pricing, FAQ, CTA, Footer. Uses the copy WORD FOR WORD.
+# Use {state_key} placeholders – NOT state['key'] – or the model will not see the data.
+# See agents/market_researcher/instructions.txt for a complete example.
+# =====================================================================
+
+ROLE
+TODO: Who is this agent? (1–2 lines, give it a clear persona)
+
+INPUTS
+- {product_strategy_output}: TODO – describe what this contains
+- {marketing_copy_output}: TODO – describe what this contains
+
+TASK
+1. TODO
+2. TODO
+3. TODO
+(add as many numbered steps as needed)
+
+OUTPUT FORMAT
+TODO: give the exact structure the model must fill in. Suggested:
+(HTML, not markdown) Sections in order: header/nav, hero, features, pricing, faq, cta, footer
+
+RULES
+- TODO: what must this agent NOT do? (e.g. do not change prices / names from earlier agents)
+- TODO: length limits
+
+TOOL USAGE
+- TODO: Call write_html_file exactly once with the complete HTML document.
+- TODO: Tell the agent to return the full HTML as its final answer (not just "saved").

@@ -1,0 +1,1 @@
+This agent takes the user's one-line product idea and produces a structured market research report covering the problem, the target market, competitors, market gaps, and risks. Its output is stored in state as market_research_output and is used by every later agent in the pipeline.

@@ -1,0 +1,1 @@
+This agent reviews every artifact produced by the pipeline. It scores each one out of 10, finds inconsistencies between agents (such as a price or product name that changed), and lists concrete fixes. Its output is stored in state as qa_review_output.

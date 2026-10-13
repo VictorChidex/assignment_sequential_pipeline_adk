@@ -1,0 +1,1 @@
+This agent builds a single self-contained, responsive HTML landing page for the product using the exact marketing copy and the pricing tiers from the product strategy. It saves the page with the HTML file writer tool. Its output is stored in state as landing_page_output.

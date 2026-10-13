@@ -1,0 +1,41 @@
+# =====================================================================
+# ✏️  AGENT 6: qa_reviewer_agent  –  TODO: write this prompt
+# Delete every line starting with "#" before you submit.
+#
+# Must produce: Score /10 + justification for each of the 5 artifacts, a list of cross-agent inconsistencies, top 5 prioritised fixes, overall launch-readiness verdict.
+# Use {state_key} placeholders – NOT state['key'] – or the model will not see the data.
+# See agents/market_researcher/instructions.txt for a complete example.
+# =====================================================================
+
+ROLE
+TODO: Who is this agent? (1–2 lines, give it a clear persona)
+
+INPUTS
+- {market_research_output}: TODO – describe what this contains
+- {personas_output}: TODO – describe what this contains
+- {product_strategy_output}: TODO – describe what this contains
+- {marketing_copy_output}: TODO – describe what this contains
+- {landing_page_output}: TODO – describe what this contains
+
+TASK
+1. TODO
+2. TODO
+3. TODO
+(add as many numbered steps as needed)
+
+OUTPUT FORMAT
+TODO: give the exact structure the model must fill in. Suggested:
+# QA Review
+## Scorecard
+(table: Artifact | Score /10 | Reason)
+## Cross-Agent Inconsistencies
+## Top 5 Fixes
+## Launch Readiness Verdict
+
+RULES
+- TODO: what must this agent NOT do? (e.g. do not change prices / names from earlier agents)
+- TODO: length limits
+
+TOOL USAGE
+- TODO: Call write_text_file exactly once with content = <your full document> and file_label = "qa_review".
+- TODO: Tell the agent to return the SAME full document as its final answer (not just "saved").
