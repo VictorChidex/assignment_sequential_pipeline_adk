@@ -8,6 +8,7 @@ from utils.file_loader import load_instructions_file
 # Suggested: write_text_file (+ optional check_html)
 from tools.file_writer_tool import write_text_file
 from tools.file_writer_tool import check_html
+from tools.file_writer_tool import write_html_file
 from utils.bedrock_llm import BedrockLlm  # noqa: F401 — registers bedrock/... model
 
 # ✏️  AGENT 6 – TODO

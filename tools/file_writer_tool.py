@@ -58,44 +58,51 @@ def write_text_file(content: str, file_label: str) -> dict:
 # -----------------------------------------------------------------------------
 # TOOL FUNCTION: write_html_file  (TODO)
 # -----------------------------------------------------------------------------
-def write_html_file(content: str, file_label: str) -> dict:
+
+
+# -----------------------------------------------------------------------------
+# TOOL FUNCTION: write_html_file
+# -----------------------------------------------------------------------------
+def write_html_file(content: str) -> dict:
     """
-    Writes a complete HTML page to a timestamped .html file in the output folder.
+    Writes a complete HTML page to a timestamped HTML file.
 
     Args:
-        content (str): Full HTML document (including <!DOCTYPE html>) as a string.
+        content (str): Full HTML document, including <!DOCTYPE html>.
 
     Returns:
-        dict: A dictionary containing the status and generated filename.
+        dict: The status, generated filename, and message.
     """
 
-    # Get the current date and time, format it as YYMMDD_HHMMSS.
-    # Example: "250611_142317"
-    timestamp = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+    if not isinstance(content, str) or not content.strip():
+        return {
+            "status": "error",
+            "file": None,
+            "message": "Error: content must be a non-empty HTML string."
+        }
 
-    # Keep the label safe for file names (letters, numbers, underscores only).
-    safe_label = "".join(c if c.isalnum() or c == "_" else "_" for c in file_label.lower())
-
-    # Example: "output/250611_142317_market_research.md"
-    filename = f"output/{timestamp}_{safe_label}.md"
-
-    # Ensure the "output" directory exists.
-    Path("output").mkdir(exist_ok=True)
+    filename = None
 
     try:
+        timestamp = datetime.datetime.now().strftime("%y%m%d_%H%M%S_%f")
+        filename = f"output/{timestamp}_landing_page.html"
+
+        Path("output").mkdir(parents=True, exist_ok=True)
         Path(filename).write_text(content, encoding="utf-8")
+
         return {
             "status": "success",
-            "file": filename,
-            "message": f"{safe_label} saved successfully."
+            "file": str(Path(filename).resolve()),
+            "message": "HTML page saved successfully."
         }
 
     except Exception as e:
         return {
             "status": "error",
             "file": filename,
-            "message": f"Error: {str(e)}"
+            "message": f"Error: {type(e).__name__}: {str(e)}"
         }
+
 
 
     # TODO: Follow the same pattern as write_text_file:
@@ -104,7 +111,8 @@ def write_html_file(content: str, file_label: str) -> dict:
     #   3. make sure output/ exists
     #   4. write the file inside try/except
     #   5. return a status dict
-    return {"status": "error", "message": "write_html_file is not implemented yet"}
+    #   return {"status": "error", "message": "write_html_file is not implemented yet"}
+
 
 
 # -----------------------------------------------------------------------------
@@ -307,4 +315,3 @@ def get_today() -> dict:
             "status": "error",
             "message": f"Error: {str(e)}"
         }
-

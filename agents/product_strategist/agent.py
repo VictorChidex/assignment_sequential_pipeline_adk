@@ -17,7 +17,7 @@ product_strategist_agent = LlmAgent(
     model="bedrock/amazon.nova-lite-v1:0",
     instruction=load_instructions_file("agents/product_strategist/instructions.txt"),
     description=load_instructions_file("agents/product_strategist/description.txt"),
-    tools=[write_text_file, calculate_pricing],                                  # TODO: add tool(s), e.g. [write_text_file]
+    tools=[write_text_file, calculate_pricing],     # TODO: add tool(s), e.g. [write_text_file]
     # TODO: add output_key="product_strategy_output"
     output_key="product_strategy_output"
 )

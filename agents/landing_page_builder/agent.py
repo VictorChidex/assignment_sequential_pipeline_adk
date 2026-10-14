@@ -1,5 +1,6 @@
 import os
 import sys
+from html.parser import HTMLParser
 from google.adk.agents import LlmAgent
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
@@ -7,16 +8,18 @@ from utils.file_loader import load_instructions_file
 # TODO: import the tool(s) this agent needs from tools.file_writer_tool
 # Suggested: write_html_file (you must implement it in tools/file_writer_tool.py)
 from tools.file_writer_tool import write_html_file
+from tools.file_writer_tool import check_html
 from utils.bedrock_llm import BedrockLlm  # noqa: F401 — registers bedrock/... model
 
 # ✏️  AGENT 5 – TODO
-# Look at agents/market_researcher/agent.py for the complete pattern.
+# Look at agents/market_researcher/agent.py f
+# or the complete pattern.
 landing_page_builder_agent = LlmAgent(
     name="landing_page_builder_agent",                     # do not change (used for grading)
     model="bedrock/amazon.nova-lite-v1:0",
     instruction=load_instructions_file("agents/landing_page_builder/instructions.txt"),
     description=load_instructions_file("agents/landing_page_builder/description.txt"),
-    tools=[write_html_file],                                  # TODO: add tool(s), e.g. [write_html_file]
+    tools=[write_html_file, check_html],                            # TODO: add tool(s), e.g. [write_html_file]
     # TODO: add output_key="landing_page_output"
     output_key="landing_page_output"
 )
